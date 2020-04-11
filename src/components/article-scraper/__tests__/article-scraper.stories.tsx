@@ -6,9 +6,9 @@ import { Story } from "@src/components/dev";
 // // // //
 
 storiesOf("ArticleScraper", module).add("renders", () => {
-    return (
-        <Story>
-            <ArticleScraper />
-        </Story>
-    );
+  return (
+    <Story>
+      <ArticleScraper />
+    </Story>
+  );
 });
