@@ -1,0 +1,1 @@
+export { ArticleScraper } from "./component";

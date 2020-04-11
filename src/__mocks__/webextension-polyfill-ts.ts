@@ -4,7 +4,10 @@
 // outside the Web Extension environment provided by a compatible browser
 export const browser: any = {
     tabs: {
-        executeScript(currentTabId: number, details: any) {
+        executeScript(
+            currentTabId: number,
+            details: any,
+        ): Promise<{ done: boolean }> {
             return Promise.resolve({ done: true });
         },
     },
