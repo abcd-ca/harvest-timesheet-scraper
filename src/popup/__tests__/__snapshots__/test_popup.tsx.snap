@@ -16,7 +16,7 @@ exports[`component renders 1`] = `
         <p
           className="lead mb-0"
         >
-          Example Extension
+          Article Scraper
         </p>
       </div>
     </div>
@@ -31,13 +31,7 @@ exports[`component renders 1`] = `
           className="btn btn-block btn-outline-dark"
           onClick={[Function]}
         >
-          Scroll To Top
-        </button>
-        <button
-          className="btn btn-block btn-outline-dark"
-          onClick={[Function]}
-        >
-          Scroll To Bottom
+          Scrape Medium.com Article
         </button>
       </div>
     </div>

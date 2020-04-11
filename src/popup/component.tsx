@@ -1,7 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { Hello } from "@src/components/hello";
 import { browser } from "webextension-polyfill-ts";
-import { Scroller } from "@src/components/scroller";
+// import { Scroller } from "@src/components/scroller";
+import { ArticleScraper } from "@src/components/article-scraper";
 import "./styles.scss";
 
 // // // //
@@ -18,7 +19,7 @@ export const Popup: FunctionComponent = () => {
             <div className="container mx-4 my-4">
                 <Hello />
                 <hr />
-                <Scroller />
+                <ArticleScraper />
             </div>
         </div>
     );

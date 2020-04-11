@@ -48,7 +48,7 @@ export const ArticleScraper: FunctionComponent = () => {
                     className="btn btn-block btn-outline-dark"
                     onClick={(): void => scrapeArticle()}
                 >
-                    Scrape Article!
+                    Scrape Medium.com Article
                 </button>
             </div>
         </div>

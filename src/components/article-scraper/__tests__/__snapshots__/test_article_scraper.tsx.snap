@@ -11,7 +11,7 @@ exports[`component renders 1`] = `
       className="btn btn-block btn-outline-dark"
       onClick={[Function]}
     >
-      Scrape Article!
+      Scrape Medium.com Article
     </button>
   </div>
 </div>
