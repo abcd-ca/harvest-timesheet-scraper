@@ -13,6 +13,15 @@ exports[`component renders 1`] = `
     >
       Scrape Medium.com Article
     </button>
+    <textarea
+      className="form-control"
+      cols={30}
+      id="result"
+      name="result"
+      readOnly={true}
+      rows={10}
+      value="..."
+    />
   </div>
 </div>
 `;
