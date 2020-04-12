@@ -39,7 +39,7 @@ export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
         const node = bodyNodes[i]
 
         // Ignore divs
-        if (["H1", "H2", "H3", "P", "BLOCKQUOTE"].indexOf(node.tagName) != -1) {
+        if (["H1", "H2", "H3", "P", "BLOCKQUOTE", "UL", "PRE"].indexOf(node.tagName) != -1) {
           // console.log(node.textContent)
           content += node.textContent + "\n\n"
         }
