@@ -24,9 +24,13 @@ export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
         "#root > div > article > div > section > div > div > div > h2",
       )?.textContent;
 
-      const bodyNodes =
-        document.querySelector("p[data-selectable-paragraph]")?.parentNode
-          ?.children || [];
+      const bodyNodes = []
+
+      const sections = document.querySelectorAll("#root > div > article > div > section > div > div")
+
+      for (const section of sections as any) {
+        bodyNodes.push(...(section?.children || []))
+      }
 
       const author = document.querySelector(
         "#root > div > article > div > section > div > div > div > div > div > div > div > div > span > div > span > a",
