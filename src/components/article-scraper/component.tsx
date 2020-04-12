@@ -55,6 +55,7 @@ export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
       content = content.replace(/[“”]/g, '"')
                        .replace(/[‘’]/g, "'")
                        .replace(/\—/g, "-")
+                       .replace(/[^\x00-\x7F]/g, "");
 
       return content
     }
