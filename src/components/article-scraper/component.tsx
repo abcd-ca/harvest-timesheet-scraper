@@ -36,7 +36,9 @@ export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
         "#root > div > article > div > section > div > div > div > div > div > div > div > div > span > div > span > a",
       )?.textContent;
 
-      let content = "";
+      let content = `${title}\n\n`;
+      content += `${subtitle}\n\n`;
+      content += `By : ${author}\n\n`;
 
       for (let i = 0; i < bodyNodes.length; i++) {
         const node = bodyNodes[i]
@@ -44,7 +46,7 @@ export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
         // Ignore divs
         if (["H1", "H2", "H3", "P", "BLOCKQUOTE", "UL", "PRE"].indexOf(node.tagName) != -1) {
           // console.log(node.textContent)
-          content += node.textContent + "\n\n"
+          content += `${node.textContent}\n\n`
         }
       }
 
