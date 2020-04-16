@@ -15,6 +15,20 @@ export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
   }
 
   scrapeArticle(): void {
+    function cleanup(input: string): string {
+      const output = input
+        .replace(new RegExp(String.fromCharCode(8216), "g"), "'")
+        .replace(new RegExp(String.fromCharCode(8217), "g"), "'")
+        .replace(new RegExp(String.fromCharCode(8219), "g"), "'")
+        .replace(new RegExp(String.fromCharCode(8220), "g"), '"')
+        .replace(new RegExp(String.fromCharCode(8221), "g"), '"')
+        .replace(new RegExp(String.fromCharCode(8229), "g"), '"')
+        .replace(new RegExp(String.fromCharCode(8212), "g"), "-")
+        .replace(/[^\x00-\x7F]/g, "");
+
+      return output;
+    }
+
     function getMediumArticle(): string {
       const title = document.querySelector(
         "#root > div > article > div > section > div > div > div > div > h1",
@@ -24,12 +38,14 @@ export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
         "#root > div > article > div > section > div > div > div > h2",
       )?.textContent;
 
-      const bodyNodes = []
+      const bodyNodes = [];
 
-      const sections = document.querySelectorAll("#root > div > article > div > section > div > div")
+      const sections = document.querySelectorAll(
+        "#root > div > article > div > section > div > div",
+      );
 
       for (const section of sections as any) {
-        bodyNodes.push(...(section?.children || []))
+        bodyNodes.push(...(section?.children || []));
       }
 
       const author = document.querySelector(
@@ -41,23 +57,20 @@ export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
       content += `By : ${author}\n\n`;
 
       for (let i = 0; i < bodyNodes.length; i++) {
-        const node = bodyNodes[i]
+        const node = bodyNodes[i];
 
         // Ignore divs
-        if (["H1", "H2", "H3", "P", "BLOCKQUOTE", "UL", "PRE"].indexOf(node.tagName) != -1) {
+        if (
+          ["H1", "H2", "H3", "P", "BLOCKQUOTE", "UL", "PRE"].indexOf(
+            node.tagName,
+          ) != -1
+        ) {
           // console.log(node.textContent)
-          content += `${node.textContent}\n\n`
+          content += `${node.textContent}\n\n`;
         }
       }
 
-      // console.log([title, subtitle, author, content])
-
-      content = content.replace(/[“”]/g, '"')
-                       .replace(/[‘’]/g, "'")
-                       .replace(/\—/g, "-")
-                       .replace(/[^\x00-\x7F]/g, "");
-
-      return content
+      return cleanup(content);
     }
 
     browser.tabs
@@ -78,7 +91,7 @@ export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
             code: "(" + getMediumArticle + ")();",
           })
           .then(article => {
-            this.setState({ article: `${article}` })
+            this.setState({ article: `${article}` });
           });
       });
   }
