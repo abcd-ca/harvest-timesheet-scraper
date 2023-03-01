@@ -1,125 +1,89 @@
-import React, { FunctionComponent } from "react";
-import "./styles.scss";
+import React, { useEffect, useState } from "react";
 import { browser, Tabs } from "webextension-polyfill-ts";
 
 // // // //
 
-interface ArticleScraperState {
-  article: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Props {}
 
-export class ArticleScraper extends React.Component<{}, ArticleScraperState> {
-  constructor(props: Readonly<{}>) {
-    super(props);
-    this.state = { article: "..." };
+export const ArticleScraper: React.FC<Props> = ({}) => {
+  const [consolidatedEntry, setConsolidatedEntry] = useState<string>("");
+
+  /**
+   * The way this is called, it runs in the context of the current tab as a content script, which means it has limited
+   * access to the parent extension's global scope, and can't access variables and functions defined
+   * in the parent script.
+   */
+  function scrapeTimesheetEntries(): string[] {
+    const timesheetEntries = Array.from(
+      document.querySelectorAll(".entry-details .notes p"),
+    ).map(el => el?.textContent);
+
+    // can't use spread because runs in a context where the tslib helper functions are not available
+    return timesheetEntries;
   }
 
-  scrapeArticle(): void {
-    function cleanup(input: string): string {
-      const output = input
-        .replace(new RegExp(String.fromCharCode(8216), "g"), "'")
-        .replace(new RegExp(String.fromCharCode(8217), "g"), "'")
-        .replace(new RegExp(String.fromCharCode(8219), "g"), "'")
-        .replace(new RegExp(String.fromCharCode(8220), "g"), '"')
-        .replace(new RegExp(String.fromCharCode(8221), "g"), '"')
-        .replace(new RegExp(String.fromCharCode(8229), "g"), '"')
-        .replace(new RegExp(String.fromCharCode(8212), "g"), "-")
-        .replace(/[^\x00-\x7F]/g, "");
+  const onClickScrape = async (): Promise<void> => {
+    console.log(`*** scrapeArticle `);
 
-      return output;
+    const tabs: Tabs.Tab[] = await browser.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    // Pulls current tab from browser.tabs.query response
+    const currentTab: Tabs.Tab | undefined = tabs[0];
+
+    // Short circuits function execution is current tab isn't found
+    if (!currentTab) {
+      return;
     }
 
-    function getMediumArticle(): string {
-      const title = document.querySelector(
-        "#root > div > article > div > section > div > div > div > div > h1",
-      )?.textContent;
-
-      const subtitle = document.querySelector(
-        "#root > div > article > div > section > div > div > div > h2",
-      )?.textContent;
-
-      const bodyNodes = [];
-
-      const sections = document.querySelectorAll(
-        "#root > div > article > div > section > div > div",
-      );
-
-      for (const section of sections as any) {
-        bodyNodes.push(...(section?.children || []));
-      }
-
-      const author = document.querySelector(
-        "#root > div > article > div > section > div > div > div > div > div > div > div > div > span > div > span > a",
-      )?.textContent;
-
-      let content = `${title}\n\n`;
-      content += `${subtitle}\n\n`;
-      content += `By : ${author}\n\n`;
-
-      for (let i = 0; i < bodyNodes.length; i++) {
-        const node = bodyNodes[i];
-
-        // Ignore divs
-        if (
-          ["H1", "H2", "H3", "P", "BLOCKQUOTE", "UL", "PRE"].indexOf(
-            node.tagName,
-          ) != -1
-        ) {
-          // console.log(node.textContent)
-          content += `${node.textContent}\n\n`;
-        }
-      }
-
-      return cleanup(content);
-    }
-
-    browser.tabs
-      .query({ active: true, currentWindow: true })
-      .then((tabs: Tabs.Tab[]) => {
-        // Pulls current tab from browser.tabs.query response
-        const currentTab: Tabs.Tab | undefined = tabs[0];
-
-        // Short circuits function execution is current tab isn't found
-        if (!currentTab) {
-          return;
-        }
-
-        // browser.runtime.sendMessage({ popupMounted: true });
-        // Executes the script in the current tab
-        browser.tabs
-          .executeScript(currentTab.id, {
-            code: "(" + getMediumArticle + ")();",
-          })
-          .then(article => {
-            this.setState({ article: `${article}` });
-          });
-      });
-  }
-
-  render(): JSX.Element {
-    return (
-      <div className="row">
-        <div className="col-lg-12">
-          <button
-            className="btn btn-block btn-outline-dark"
-            onClick={(): void => this.scrapeArticle()}
-          >
-            Scrape Medium.com Article
-          </button>
-
-          <textarea
-            name="result"
-            id="result"
-            className="form-control"
-            cols={30}
-            rows={10}
-            value={this.state.article}
-            readOnly
-          ></textarea>
-
-          {/* <button className="btn btn-block btn-outline-dark">Copy</button> */}
-        </div>
-      </div>
+    // browser.runtime.sendMessage({ popupMounted: true });
+    // Executes the script in the current tab
+    const [entries]: string[][] = await browser.tabs.executeScript(
+      currentTab.id,
+      {
+        /*
+          `scrape` runs in the context of the current tab as a content script, which means it has limited access
+          to the parent extension's global scope, and can't access variables and functions defined in the parent script.
+         */
+        code: "(" + scrapeTimesheetEntries + ")();",
+      },
     );
-  }
-}
+
+    setConsolidatedEntry(entries.join(", "));
+  };
+
+  const onClickCopyToClipboard = async (): Promise<void> => {
+    await navigator.clipboard.writeText(consolidatedEntry);
+  };
+
+  return (
+    <div className="row">
+      <div className="col-lg-12">
+        <button
+          className="btn btn-block btn-outline-dark"
+          onClick={onClickScrape}
+        >
+          Scrape
+        </button>
+        <button
+          className="btn btn-block btn-outline-dark"
+          onClick={onClickCopyToClipboard}
+        >
+          Copy
+        </button>
+
+        <textarea
+          name="result"
+          id="result"
+          className="form-control"
+          cols={30}
+          rows={10}
+          value={consolidatedEntry}
+          readOnly
+        ></textarea>
+      </div>
+    </div>
+  );
+};

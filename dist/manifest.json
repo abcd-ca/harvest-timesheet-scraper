@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "Chrome Extension Starter",
-    "description": "A Chrome Extension starter kit",
+    "name": "Harvest timesheet scraper",
+    "description": "Copies all timesheet entries from the Time tab in Harvest into a single line of text, so that you can paste into Harvest in another account. Open the pop-up, click Scrape the Copy.",
     "version": "1.0.0",
     "browser_action": {
         "default_icon": "icon-16.png",

@@ -3,7 +3,6 @@ import { Hello } from "@src/components/hello";
 import { browser } from "webextension-polyfill-ts";
 // import { Scroller } from "@src/components/scroller";
 import { ArticleScraper } from "@src/components/article-scraper";
-import "./styles.scss";
 
 // // // //
 

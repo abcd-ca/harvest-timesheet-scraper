@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from "react";
-import "./styles.scss";
 import { browser, Tabs } from "webextension-polyfill-ts";
 
 // // // //

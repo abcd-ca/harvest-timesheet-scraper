@@ -9,12 +9,13 @@
         "moduleResolution": "node",
         "rootDir": "./src",
         "outDir": "dist/js",
-        "strict": true,
+        "strict": false,
         "sourceMap": true,
         "jsx": "react",
         "esModuleInterop": true,
         "lib": ["es2015", "dom"],
         "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true,
     }
 }

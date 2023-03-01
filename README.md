@@ -1,10 +1,6 @@
-<!-- # react-typescript-web-extension-starter -->
+**Overview**
 
-![](https://i.imgur.com/sAJbv36.png)
-
-:desktop_computer: A Web Extension starter kit built with React, TypeScript, SCSS, Storybook, EsLint, Prettier, Jest, Bootstrap,x &amp; Webpack. Compatible with both Google Chrome + Mozilla Firefox.
-
-![Example Extension Popup](https://i.imgur.com/Wp37usG.png "Example Extension Popup")
+Forked a boilerplate and customized this project. Basic productivity tool created to be able to conveniently copy timesheet entries from one Harvest account to another. 
 
 **Getting Started**
 
@@ -14,6 +10,17 @@ Run the following commands to install dependencies and start developing
 yarn install
 yarn dev
 ```
+
+**Using the app:**
+
+With the Chrome exetension installed (see below), 
+
+1. log into both Harvest accounts in two separate browsers and place them side by side. Navigate to the Time tab in Harvest in both.
+2. In window A, click the Chrome extension icon (you can pin it first so that it's always visible). In the extension's pop-up, click scrape, then click copy
+3. In window B, add a new timesheet entry, click into the description field and paste. It should paste a consolidated description made up of all the entries from window A. Enter the total time for that day from window A and click Save Entry
+4. In both windows, navigate to the next day. Repeat from step 2 until you're done.
+
+:desktop_computer: A Web Extension starter kit built with React, TypeScript, Storybook, EsLint, Prettier, Jest, Bootstrap,x &amp; Webpack. Compatible with both Google Chrome + Mozilla Firefox.
 
 **Scripts**
 
@@ -31,6 +38,8 @@ In [Google Chrome](https://www.google.com/chrome/), open up [chrome://extensions
 ![Installed Extension in Google Chrome](https://i.imgur.com/ORuHbDR.png "Installed Extension in Google Chrome")
 
 **Loading the extension in Mozilla Firefox**
+
+*Untested since forked and modified by abcd*
 
 In [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/), open up the [about:debugging](about:debugging) page in your browser. Click the `Load Temporary Add-on...` button and select the `manfiest.json` from the `dist` directory in this repository - your extension should now be loaded.
 
@@ -52,8 +61,6 @@ In [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/), open up the [a
 
 -   Includes a custom mock for the [webextension-polyfill-ts](https://github.com/Lusito/webextension-polyfill-ts) package in `src/__mocks__`. This allows you to mock any browser APIs used by your extension so you can develop your components inside Storybook.
 
-![Example Storybook Setup](https://i.imgur.com/ER0WHtY.png "Example Storybook Setup")
-
 **Built with**
 
 -   [React](https://reactjs.org)
@@ -65,7 +72,6 @@ In [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/), open up the [a
 -   [Webpack](https://webpack.js.org/)
 -   [Babel](https://babeljs.io/)
 -   [Bootstrap](https://getbootstrap.com)
--   [SCSS](https://sass-lang.com/)
 -   [webextension-polyfill-ts](https://github.com/Lusito/webextension-polyfill-ts)
 
 **Misc. References**
